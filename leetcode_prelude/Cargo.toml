@@ -11,4 +11,4 @@ license = "MIT"
 edition = "2018"
 
 [dependencies]
-leetcode_test = "*"
+leetcode_test = { version = "^0.1", path = "../leetcode_test" }
