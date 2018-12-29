@@ -22,7 +22,9 @@ impl ListNode {
 /// # Example
 ///
 /// ```rust
-/// let list = linkedlist![1, 2, 3]
+/// use leetcode_prelude::linkedlist;
+///
+/// let list = linkedlist![1, 2, 3];
 /// ```
 #[macro_export]
 macro_rules! linkedlist {
