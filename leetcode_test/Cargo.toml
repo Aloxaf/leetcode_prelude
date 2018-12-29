@@ -1,6 +1,6 @@
 [package]
 name = "leetcode_test"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Aloxaf <bailong104@gmail.com>"]
 description = "Some useful macros and definition for exercising in leetcode"
 homepage = "https://github.com/Aloxaf/leetcode_prelude"
