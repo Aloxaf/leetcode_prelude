@@ -1,4 +1,4 @@
-# leetcode_prelude
+# leetcode_prelude [![](https://img.shields.io/crates/v/leetcode_prelude.svg)](https://crates.io/crates/leetcode_prelude)
 
 Some useful macros and definition for exercising in leetcode
 
