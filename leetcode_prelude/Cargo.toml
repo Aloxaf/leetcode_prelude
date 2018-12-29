@@ -1,0 +1,14 @@
+[package]
+name = "leetcode_prelude"
+version = "0.1.0"
+authors = ["Aloxaf <bailong104@gmail.com>"]
+description = "Some useful macros and definition for exercising in leetcode"
+homepage = "https://github.com/Aloxaf/leetcode_prelude"
+repository = "https://github.com/Aloxaf/leetcode_prelude"
+readme = "README.md"
+keywords = ["macro"]
+license = "MIT"
+edition = "2018"
+
+[dependencies]
+leetcode_test = "*"
