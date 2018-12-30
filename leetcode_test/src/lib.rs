@@ -70,6 +70,30 @@ impl ToArgs for Value {
     }
 }
 
+fn json_to_code(input: TokenStream) -> String {
+    let input = input.to_string();
+    let v = split_to_vec(&input);
+    let (funcs, args, rets) = (v[0], v[1], v[2]);
+
+    // 反序列化 json
+    // 这个地方有个坑点, "-123" 在先前 to_string 的时候会变成 "- 123", 所以单独替换一下 "- " => "-"
+    let funcs = serde_json::from_str::<Value>(&turn_to_legal_name(funcs)).unwrap();
+    let args = serde_json::from_str::<Value>(&args.replace("- ", "-")).unwrap();
+    let rets = serde_json::from_str::<Value>(&rets.replace("- ", "-")).unwrap();
+
+    let mut code = String::new();
+    code.push_str(&format!("let mut obj = {}::new();\n", funcs[0].as_str().unwrap()));
+
+    for i in 1..funcs.as_array().unwrap().len() {
+        let mut stmt = format!("obj.{}({})", funcs[i].as_str().unwrap(), args[i].to_args());
+        if !rets[i].is_null() {
+            stmt = format!(r##"assert_eq!({}, {}, r#"{}"#)"##, stmt, rets[i].to_string(), stmt);
+        }
+        stmt.push_str(";\n");
+        code.push_str(&stmt);
+    }
+    code
+}
 
 /// Generate code from leetcode json
 ///
@@ -92,33 +116,10 @@ impl ToArgs for Value {
 /// ```
 #[proc_macro]
 pub fn leetcode_test(input: TokenStream) -> TokenStream {
-    let input = input.to_string();
-    let v = split_to_vec(&input);
-    let (funcs, args, rets) = (v[0], v[1], v[2]);
-
-    // 反序列化 json
-    // 这个地方有个坑点, "-123" 在先前 to_string 的时候会变成 "- 123", 所以单独替换一下 "- " => "-"
-    let funcs = serde_json::from_str::<Value>(&turn_to_legal_name(funcs)).unwrap();
-    let args = serde_json::from_str::<Value>(&args.replace("- ", "-")).unwrap();
-    let rets = serde_json::from_str::<Value>(&rets.replace("- ", "-")).unwrap();
-
-    let mut code = String::new();
-    code.push_str(&format!("let mut obj = {}::new();\n", funcs[0].as_str().unwrap()));
-
-    for i in 1..funcs.as_array().unwrap().len() {
-        let mut stmt = format!("obj.{}({})", funcs[i].as_str().unwrap(), args[i].to_args());
-        if !rets[i].is_null() {
-            stmt = format!(r##"assert_eq!({}, {}, r#"{}"#)"##, stmt, rets[i].to_string(), stmt);
-        }
-        stmt.push_str(";\n");
-        code.push_str(&stmt);
-    }
-
-    // format!("r#\"{}\"#", code).parse().unwrap()
-    code.parse().unwrap()
+    json_to_code(input).parse().unwrap()
 }
 
 #[proc_macro]
 pub fn leetcode_test_debug(input: TokenStream) -> TokenStream {
-    format!(r##"r#"{}"#"##, leetcode_test(input)).parse().unwrap()
+    format!(r###"r##"{}"##"###, json_to_code(input)).parse().unwrap()
 }
