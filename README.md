@@ -44,3 +44,14 @@ use leetcode_prelude::vec_string;
 
 let vec = vec_string!["1", "2", "3"];
 ```
+
+### assert_eq_sorted
+
+```rust
+use leetcode_prelude::assert_eq_sorted;
+
+assert_eq_sorted!(vec![1, 2], vec![2, 1]);
+```
+
+
+
