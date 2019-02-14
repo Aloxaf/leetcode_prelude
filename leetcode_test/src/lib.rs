@@ -99,7 +99,7 @@ fn json_to_code(input: TokenStream) -> String {
 ///
 /// # Example
 ///
-/// ```rust
+/// ```ignore
 /// leetcode_test!(
 ///     ["Trie", "insert", "search"]
 ///     [[], ["apple"], ["apple"]]
@@ -109,7 +109,7 @@ fn json_to_code(input: TokenStream) -> String {
 ///
 /// this will be expaned to
 ///
-/// ``` rust
+/// ``` ignore
 /// let mut obj = Trie::new();
 /// obj.insert("apple".to_owned());
 /// assert_eq!(obj.search("apple".to_owned()), true);
