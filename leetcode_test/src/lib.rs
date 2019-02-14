@@ -1,6 +1,7 @@
 extern crate proc_macro;
 
 use proc_macro::TokenStream;
+
 use serde_json::Value;
 
 /// 将相连的若干的 list 分割
@@ -15,14 +16,14 @@ fn split_to_vec(input: &str) -> Vec<&str> {
                     start = idx;
                 }
                 cnt += 1;
-            },
+            }
             ']' => {
                 cnt -= 1;
                 if cnt == 0 {
                     ret.push(&input[start..=idx]);
                     start = idx + 1;
                 }
-            },
+            }
             _ => (),
         }
     }
@@ -59,13 +60,17 @@ impl ToArgs for Value {
         if array.len() == 0 {
             "".to_owned()
         } else {
-            array.iter().map(|value| {
-                if value.is_string() {
-                    format!("{}.to_owned()", value)
-                } else {
-                    value.to_string()
-                }
-            }).collect::<Vec<_>>().join(", ")
+            array
+                .iter()
+                .map(|value| {
+                    if value.is_string() {
+                        format!("{}.to_owned()", value)
+                    } else {
+                        value.to_string()
+                    }
+                })
+                .collect::<Vec<_>>()
+                .join(", ")
         }
     }
 }
@@ -82,12 +87,20 @@ fn json_to_code(input: TokenStream) -> String {
     let rets = serde_json::from_str::<Value>(&rets.replace("- ", "-")).unwrap();
 
     let mut code = String::new();
-    code.push_str(&format!("let mut obj = {}::new();\n", funcs[0].as_str().unwrap()));
+    code.push_str(&format!(
+        "let mut obj = {}::new();\n",
+        funcs[0].as_str().unwrap()
+    ));
 
     for i in 1..funcs.as_array().unwrap().len() {
         let mut stmt = format!("obj.{}({})", funcs[i].as_str().unwrap(), args[i].to_args());
         if !rets[i].is_null() {
-            stmt = format!(r##"assert_eq!({}, {}, r#"{}"#)"##, stmt, rets[i].to_string(), stmt);
+            stmt = format!(
+                r##"assert_eq!({}, {}, r#"{}"#)"##,
+                stmt,
+                rets[i].to_string(),
+                stmt
+            );
         }
         stmt.push_str(";\n");
         code.push_str(&stmt);
@@ -121,5 +134,7 @@ pub fn leetcode_test(input: TokenStream) -> TokenStream {
 
 #[proc_macro]
 pub fn leetcode_test_debug(input: TokenStream) -> TokenStream {
-    format!(r###"r##"{}"##"###, json_to_code(input)).parse().unwrap()
+    format!(r###"r##"{}"##"###, json_to_code(input))
+        .parse()
+        .unwrap()
 }
