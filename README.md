@@ -1,14 +1,14 @@
 # leetcode_prelude [![](https://img.shields.io/crates/v/leetcode_prelude.svg)](https://crates.io/crates/leetcode_prelude)
 
-Some useful macros and definition for exercising in leetcode
+Some useful macros and definition for exercising in LeetCode.
 
 ## How to use
 
-Add follwing lines to your Cargo.toml
+Add following lines to your Cargo.toml.
 
 ```toml
 [dependencies]
-leetcode_prelude = "^0.1"
+leetcode_prelude = "^0.2"
 ```
 
 ## Examples
