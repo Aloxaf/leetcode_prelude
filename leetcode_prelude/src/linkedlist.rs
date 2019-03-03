@@ -4,7 +4,9 @@
 ///
 /// I add Ord PartialOrd for sort Vec<TreeNode> when testing
 /// Please don't rely on it
-#[derive(PartialEq, Eq, Debug, Ord, PartialOrd)]
+use std::fmt;
+
+#[derive(PartialEq, Eq, Ord, PartialOrd)]
 pub struct ListNode {
     pub val: i32,
     pub next: Option<Box<ListNode>>,
@@ -14,6 +16,18 @@ impl ListNode {
     #[inline]
     pub fn new(val: i32) -> Self {
         ListNode { next: None, val }
+    }
+}
+
+impl fmt::Debug for ListNode {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let mut v = vec![self.val];
+        let mut p = self;
+        while let Some(next) = p.next.as_ref() {
+            v.push(next.val);
+            p = next;
+        }
+        write!(f, "{:?}", v)
     }
 }
 
