@@ -1,9 +1,9 @@
+pub use btree::TreeNode;
+pub use leetcode_test::leetcode_test;
+pub use linkedlist::ListNode;
+
 mod btree;
 mod linkedlist;
-
-pub use btree::TreeNode;
-pub use linkedlist::ListNode;
-pub use leetcode_test::leetcode_test;
 
 /// Create a Vec<String>
 #[macro_export]
