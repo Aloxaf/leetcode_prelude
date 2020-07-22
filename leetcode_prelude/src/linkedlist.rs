@@ -6,7 +6,7 @@
 /// Please don't rely on it
 use std::fmt;
 
-#[derive(PartialEq, Eq, Ord, PartialOrd)]
+#[derive(PartialEq, Eq, Clone, Ord, PartialOrd)]
 pub struct ListNode {
     pub val: i32,
     pub next: Option<Box<ListNode>>,
