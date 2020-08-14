@@ -57,7 +57,7 @@ trait ToArgs {
 impl ToArgs for Value {
     fn to_args(&self) -> String {
         let array = self.as_array().unwrap();
-        if array.len() == 0 {
+        if array.is_empty() {
             "".to_owned()
         } else {
             array
@@ -88,8 +88,9 @@ fn json_to_code(input: TokenStream) -> String {
 
     let mut code = String::new();
     code.push_str(&format!(
-        "let mut obj = {}::new();\n",
-        funcs[0].as_str().unwrap()
+        "let mut obj = {}::new({});\n",
+        funcs[0].as_str().unwrap(),
+        args[0].to_args(),
     ));
 
     for i in 1..funcs.as_array().unwrap().len() {
