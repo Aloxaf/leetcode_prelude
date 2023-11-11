@@ -65,6 +65,8 @@ impl ToArgs for Value {
                 .map(|value| {
                     if value.is_string() {
                         format!("{}.to_owned()", value)
+                    } else if value.is_array() {
+                        format!("vec![{}]", value.to_args()) 
                     } else {
                         value.to_string()
                     }

@@ -36,3 +36,22 @@ fn test_with_new_args() {
         )
     );
 }
+
+#[rustfmt::skip]
+#[test]
+fn test_with_nested_args() {
+    assert_eq!(
+        leetcode_test_debug!(
+            ["Graph", "shortestPath", "shortestPath", "addEdge", "shortestPath"]
+            [[4, [[0, 2, 5], [0, 1, 2], [1, 2, 1], [3, 0, 3]]], [3, 2], [0, 3], [[1, 3, 4]], [0, 3]]
+            [null, 6, -1, null, 6]
+        ),
+        concat!(
+            r#"let mut obj = Graph::new(4, vec![vec![0, 2, 5], vec![0, 1, 2], vec![1, 2, 1], vec![3, 0, 3]]);"#, "\n",
+            r##"assert_eq!(obj.shortest_path(3, 2), 6, r#"obj.shortest_path(3, 2)"#);"##, "\n",
+            r##"assert_eq!(obj.shortest_path(0, 3), -1, r#"obj.shortest_path(0, 3)"#);"##, "\n",
+            r#"obj.add_edge(vec![1, 3, 4]);"#, "\n",
+            r##"assert_eq!(obj.shortest_path(0, 3), 6, r#"obj.shortest_path(0, 3)"#);"##, "\n",
+        )
+    );
+}
