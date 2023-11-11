@@ -1,5 +1,3 @@
-#![feature(proc_macro_hygiene)]
-
 use leetcode_test::leetcode_test_debug;
 #[rustfmt::skip]
 #[test]
